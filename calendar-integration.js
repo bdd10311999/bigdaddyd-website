@@ -2,7 +2,7 @@
 // This script fetches upcoming shows from Google Calendar and displays them
 
 const CALENDAR_CONFIG = {
-    apiKey: 'AIzaSyAqoxb34A3wRrX1FQpXj4DId-HZBjC3w4k',
+    apiKey: 'AIzaSyDQmO4yLOy8yVjrotQ69f5W5YQGVyiXWNI',
     calendarId: 'bdd10311999@gmail.com',
     maxResults: 10,
     daysAhead: 365
