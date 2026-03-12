@@ -2,8 +2,8 @@
 // This script fetches upcoming shows from Google Calendar and displays them
 
 const CALENDAR_CONFIG = {
-    apiKey: 'AIzaSyDQmO4yLOy8yVjrotQ69f5W5YQGVyiXWNI',
-    calendarId: '132a5e37359aa55754bd8615f4187cf41138c424799f4f1113308c8cbd544ff5@group.calendar.google.com',
+    apiKey: 'AIzaSyAqoxb34A3wRrX1FQpXj4DId-HZBjC3w4k',
+    calendarId: 'bdd10311999@gmail.com',
     maxResults: 10,
     daysAhead: 365
 };
