@@ -396,6 +396,10 @@ async function loadPhotoGallery() {
             gallery.appendChild(photoItem);
         });
     });
+
+    // Auto-click ALL filter after photos load
+    const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+    if (allBtn) allBtn.click();
 }
 
 function setupGalleryFilters() {
