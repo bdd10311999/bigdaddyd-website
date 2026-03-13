@@ -492,18 +492,119 @@ function closeLightbox() {
 
 function navigateLightbox(direction) {
     if (!currentCategory || !currentLightboxPhoto) return;
-    
-    const photos = photoData[currentCategory];
+
+    const photos = Array.from(document.querySelectorAll(`.photo-item[data-category="${currentCategory}"]`))
+        .map(el => el.dataset.path);
     const currentIndex = photos.indexOf(currentLightboxPhoto);
     let newIndex = currentIndex + direction;
-    
-    // Wrap around
+
     if (newIndex < 0) newIndex = photos.length - 1;
     if (newIndex >= photos.length) newIndex = 0;
-    
+
     const lightbox = document.querySelector('.lightbox');
     const img = lightbox.querySelector('img');
-    
+
     currentLightboxPhoto = photos[newIndex];
     img.src = currentLightboxPhoto;
+}
+
+
+// ============================================
+// DYNAMIC VIDEO PLAYER WITH PLAYLIST TABS
+// ============================================
+
+const YT_API_KEY = 'AIzaSyDQmO4yLOy8yVjrotQ69f5W5YQGVyiXWNI';
+
+document.addEventListener('DOMContentLoaded', () => {
+    initVideoPlayer();
+});
+
+async function fetchPlaylist(playlistId) {
+    const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=20&playlistId=${playlistId}&key=${YT_API_KEY}`;
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        return data.items || [];
+    } catch (e) {
+        console.error('Error fetching playlist:', e);
+        return [];
+    }
+}
+
+function buildThumbnails(items, activeVideoId) {
+    const strip = document.getElementById('thumbnailStrip');
+    strip.innerHTML = '';
+
+    if (!items.length) {
+        strip.innerHTML = '<div class="thumbnail-loading">No videos found.</div>';
+        return;
+    }
+
+    items.forEach(item => {
+        const videoId = item.snippet.resourceId?.videoId;
+        const title = item.snippet.title;
+        const thumb = item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url;
+        if (!videoId || title === 'Deleted video' || title === 'Private video') return;
+
+        const el = document.createElement('div');
+        el.className = 'thumb-item' + (videoId === activeVideoId ? ' active' : '');
+        el.dataset.videoId = videoId;
+        el.dataset.title = title;
+        el.innerHTML = `<img src="${thumb}" alt="${title}" loading="lazy"><div class="thumb-title">${title}</div>`;
+        el.addEventListener('click', () => loadVideo(videoId, title));
+        strip.appendChild(el);
+    });
+}
+
+function loadVideo(videoId, title) {
+    const player = document.getElementById('featuredPlayer');
+    const titleBar = document.getElementById('videoTitle');
+    player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1`;
+    titleBar.textContent = title;
+
+    document.querySelectorAll('.thumb-item').forEach(t => {
+        t.classList.toggle('active', t.dataset.videoId === videoId);
+    });
+}
+
+async function loadPlaylist(playlistId) {
+    const strip = document.getElementById('thumbnailStrip');
+    strip.innerHTML = '<div class="thumbnail-loading">Loading videos...</div>';
+    const items = await fetchPlaylist(playlistId);
+    const player = document.getElementById('featuredPlayer');
+    const currentVideoId = new URL(player.src).searchParams.get('v') || 
+        player.src.split('/embed/')[1]?.split('?')[0];
+    buildThumbnails(items, currentVideoId);
+
+    // Auto-load first video if available
+    if (items.length > 0) {
+        const firstVideoId = items[0].snippet.resourceId?.videoId;
+        const firstTitle = items[0].snippet.title;
+        if (firstVideoId) loadVideo(firstVideoId, firstTitle);
+    }
+}
+
+function initVideoPlayer() {
+    // Playlist tab switching
+    const tabs = document.querySelectorAll('.playlist-tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            loadPlaylist(tab.dataset.playlist);
+        });
+    });
+
+    // Scroll arrows
+    const strip = document.getElementById('thumbnailStrip');
+    document.getElementById('stripLeft')?.addEventListener('click', () => {
+        strip.scrollBy({ left: -400, behavior: 'smooth' });
+    });
+    document.getElementById('stripRight')?.addEventListener('click', () => {
+        strip.scrollBy({ left: 400, behavior: 'smooth' });
+    });
+
+    // Load default playlist (Featured)
+    const defaultTab = document.querySelector('.playlist-tab.active');
+    if (defaultTab) loadPlaylist(defaultTab.dataset.playlist);
 }

@@ -359,74 +359,38 @@
         </div>
         
         <div class="container">
-            <div class="media-grid">
-                <!-- Featured Video -->
-                <div class="media-featured">
-                    <div class="media-frame">
-                        <iframe 
-                            class="featured-video"
-                            src="https://www.youtube.com/embed/rQazfzn6rig?enablejsapi=1&origin=file://" 
-                            title="Big Daddy D & The Dynamites Performance"
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
+            <!-- Featured Player -->
+            <div class="video-player-wrap">
+                <div class="video-player-frame">
+                    <iframe
+                        id="featuredPlayer"
+                        src="https://www.youtube.com/embed/rQazfzn6rig?enablejsapi=1"
+                        title="Big Daddy D &amp; The Dynamites"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
                 </div>
-                
-                <!-- Video Grid -->
-                <!-- Live Session Video 1 -->
-                <div class="media-item">
-                    <div class="media-frame">
-                        <iframe 
-                            class="featured-video"
-                            src="https://www.youtube.com/embed/T_haw_bX3WU" 
-                            title="Big Daddy D & The Dynamites Live Session"
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                </div>
-                
-                <!-- Live Session Video 2 -->
-                <div class="media-item">
-                    <div class="media-frame">
-                        <iframe 
-                            class="featured-video"
-                            src="https://www.youtube.com/embed/vNvl-60-yf4" 
-                            title="Big Daddy D & The Dynamites Live Session"
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                </div>
-                
-                <div class="media-item">
-                    <div class="media-frame">
-                        <div class="media-placeholder">
-                            <div class="play-icon">▶</div>
-                            <div class="media-label">BEHIND THE SCENES</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Audio Player -->
-                <div class="media-item media-audio">
-                    <div class="vinyl-player">
-                        <div class="vinyl-disc">
-                            <div class="vinyl-label">
-                                <span>BIG DADDY D</span>
-                            </div>
-                        </div>
-                        <div class="player-controls">
-                            <div class="control-title">FEATURED TRACKS</div>
-                            <div class="control-note">Add Spotify/streaming links</div>
-                        </div>
-                    </div>
-                </div>
+                <div id="videoTitle" class="video-title-bar">Big Daddy D at Elks Lodge</div>
             </div>
+
+            <!-- Playlist Tabs -->
+            <div class="playlist-tabs">
+                <button class="playlist-tab active" data-playlist="PLPZMkQXXcasL92-6X8HQTuaJZ-y9aoPc3">FEATURED</button>
+                <button class="playlist-tab" data-playlist="PLPZMkQXXcasICimGTfQDrABxVTQAmv9hQ">SHOWS</button>
+                <button class="playlist-tab" data-playlist="PLPZMkQXXcasIpDb273rRNITaeVN0anuDH">BEHIND THE SCENES</button>
+            </div>
+
+            <!-- Thumbnail Strip -->
+            <div class="thumbnail-strip-wrap">
+                <button class="strip-arrow strip-arrow-left" id="stripLeft">&#8249;</button>
+                <div class="thumbnail-strip" id="thumbnailStrip">
+                    <div class="thumbnail-loading">Loading videos...</div>
+                </div>
+                <button class="strip-arrow strip-arrow-right" id="stripRight">&#8250;</button>
+            </div>
+
+            <div class="media-grid" style="display:none;">
             
             <!-- Photo Gallery -->
             <div class="photo-gallery-section">
