@@ -397,9 +397,7 @@ async function loadPhotoGallery() {
         });
     });
 
-    // Auto-click ALL filter after photos load
-    const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
-    if (allBtn) allBtn.click();
+    // Photos load hidden — user selects a category to view
 }
 
 function setupGalleryFilters() {
