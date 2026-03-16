@@ -195,59 +195,7 @@ if (newsletterForm) {
     });
 }
 
-// Custom Cursor Effect (Desktop Only)
-if (window.innerWidth > 968) {
-    const cursor = document.createElement('div');
-    cursor.className = 'custom-cursor';
-    cursor.style.cssText = `
-        position: fixed;
-        width: 20px;
-        height: 20px;
-        border: 2px solid var(--neon-blue);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 10000;
-        transition: all 0.15s ease;
-        box-shadow: 0 0 20px var(--glow-blue);
-        opacity: 0;
-    `;
-    document.body.appendChild(cursor);
-    
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
-    
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        cursor.style.opacity = '1';
-    });
-    
-    function animateCursor() {
-        cursorX += (mouseX - cursorX) * 0.2;
-        cursorY += (mouseY - cursorY) * 0.2;
-        cursor.style.left = cursorX + 'px';
-        cursor.style.top = cursorY + 'px';
-        requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
-    
-    // Cursor interactions
-    const interactiveElements = document.querySelectorAll('a, button, .play-icon');
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursor.style.width = '40px';
-            cursor.style.height = '40px';
-            cursor.style.borderColor = 'var(--neon-gold)';
-            cursor.style.boxShadow = '0 0 30px var(--glow-gold)';
-        });
-        el.addEventListener('mouseleave', () => {
-            cursor.style.width = '20px';
-            cursor.style.height = '20px';
-            cursor.style.borderColor = 'var(--neon-blue)';
-            cursor.style.boxShadow = '0 0 20px var(--glow-blue)';
-        });
-    });
-}
+// Custom cursor removed — using standard browser cursor
 
 // Vinyl Record Interaction
 const vinylDisc = document.querySelector('.vinyl-disc');
