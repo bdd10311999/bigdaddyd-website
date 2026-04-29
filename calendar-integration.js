@@ -1,19 +1,19 @@
 // Google Calendar Integration for Big Daddy D & The Dynamites
-// This script fetches upcoming shows from Google Calendar and displays them
+// Calls Cloudflare Worker proxy — API key is stored securely in Cloudflare
 
 const CALENDAR_CONFIG = {
-    apiKey: 'AIzaSyDQmO4yLOy8yVjrotQ69f5W5YQGVyiXWNI',
     calendarId: 'bdd10311999@gmail.com',
     maxResults: 10,
-    daysAhead: 365
+    daysAhead: 365,
+    workerUrl: 'https://bigdaddyd-api.bdd10311999.workers.dev'
 };
 
 class CalendarIntegration {
     constructor(config) {
-        this.apiKey = config.apiKey;
         this.calendarId = config.calendarId;
         this.maxResults = config.maxResults || 10;
         this.daysAhead = config.daysAhead || 365;
+        this.workerUrl = config.workerUrl;
         this.showsContainer = document.getElementById('shows-grid');
         this.loadingIndicator = document.getElementById('shows-loading');
         this.noShowsMessage = document.getElementById('no-shows');
@@ -35,14 +35,10 @@ class CalendarIntegration {
         const futureDate = new Date(now.getTime() + (this.daysAhead * 24 * 60 * 60 * 1000));
         const timeMax = futureDate.toISOString();
 
-        const url = 'https://www.googleapis.com/calendar/v3/calendars/' + 
-            encodeURIComponent(this.calendarId) + '/events?' +
-            'key=' + this.apiKey + '&' +
-            'timeMin=' + timeMin + '&' +
-            'timeMax=' + timeMax + '&' +
-            'maxResults=' + this.maxResults + '&' +
-            'singleEvents=true&' +
-            'orderBy=startTime';
+        const url = this.workerUrl + '?' +
+            'timeMin=' + encodeURIComponent(timeMin) + '&' +
+            'timeMax=' + encodeURIComponent(timeMax) + '&' +
+            'maxResults=' + this.maxResults;
 
         const response = await fetch(url);
         
@@ -120,7 +116,6 @@ class CalendarIntegration {
             '</div>' +
             featuredBadge;
 
-        // Add click handler for modal
         const detailsBtn = card.querySelector('.show-details-btn');
         const self = this;
         detailsBtn.addEventListener('click', function(e) {
