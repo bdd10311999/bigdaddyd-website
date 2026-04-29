@@ -463,14 +463,14 @@ function navigateLightbox(direction) {
 // DYNAMIC VIDEO PLAYER WITH PLAYLIST TABS
 // ============================================
 
-const YT_API_KEY = 'AIzaSyDQmO4yLOy8yVjrotQ69f5W5YQGVyiXWNI';
+const WORKER_URL = 'https://bigdaddyd-api.bdd10311999.workers.dev';
 
 document.addEventListener('DOMContentLoaded', () => {
     initVideoPlayer();
 });
 
 async function fetchPlaylist(playlistId) {
-    const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=20&playlistId=${playlistId}&key=${YT_API_KEY}`;
+    const url = `${WORKER_URL}/youtube?playlistId=${playlistId}&maxResults=20`;
     try {
         const res = await fetch(url);
         const data = await res.json();
