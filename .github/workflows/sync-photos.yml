@@ -1,0 +1,39 @@
+name: Sync Photos from Drive to GitHub
+
+on:
+  schedule:
+    # Run at 3 AM UTC daily (avoiding Pi 3's 2 AM slot)
+    - cron: '0 3 * * *'
+  # Also allow manual trigger from GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./sync-drive
+        continue-on-error: false
+
+      - name: Create Google credentials file
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials.json
+        working-directory: ./sync-drive
+
+      - name: Run photo sync
+        run: node sync-drive.js
+        working-directory: ./sync-drive
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_OWNER: bdd10311999
+          GITHUB_REPO: bigdaddyd-website
+          GOOGLE_APPLICATION_CREDENTIALS: ./credentials.json
